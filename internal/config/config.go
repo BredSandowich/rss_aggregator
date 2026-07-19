@@ -1,8 +1,9 @@
 package config
 
 import (
-	"path/filepath",
+	"path/filepath"
 	"os"
+	"encoding/json"
 )
 
 type Config struct {
