@@ -17,6 +17,10 @@ type command struct {
 	Args []string
 }
 
+type commands struct {
+	registeredCommands map[string]func(*state, command) error
+}
+
 func handlerLogin(s *state, cmd command) error {
 	//Check for missing arguments
 	if len(cmd.Args) == 0 {
@@ -33,3 +37,17 @@ func handlerLogin(s *state, cmd command) error {
 	fmt.Printf("User has been set to %s\n", cmd.Args[0])
 	return nil
 }
+
+func (c *commands) run(s *state, cmd command) error {
+	currentState, exists := c.registeredCommands[cmd.Name]
+	if !exists {
+		return errors.New("Command does not exist")
+	} else {
+		result := currentState(s, cmd)
+		return result
+	}
+}	
+
+func (c *commands) register(name string, f func(*state, command) error) {
+	c.registeredCommands[name] = f
+}	
