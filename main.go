@@ -14,17 +14,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
-	err = configuration.SetUser("Brent")
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	newConfig, err := config.Read()
-	if err != nil {
-		log.Fatal(err)
-	}
+	currentState := state{Config : configuration}
+
+	commandsMap := make(map[string]func(*state, command) error)
+	myCommands := commands{registeredCommands : commandsMap}
 	
-	fmt.Println(newConfig)
+	fmt.Println(configuration)
 
 }
