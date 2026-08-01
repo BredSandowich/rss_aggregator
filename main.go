@@ -37,6 +37,7 @@ func main() {
 	myCommands.register("register", handlerRegister)
 	myCommands.register("reset", handlerReset)
 	myCommands.register("users", handlerUsers)
+	myCommands.register("agg", handlerAgg)
 
 	if len(os.Args) < 2 {
 		fmt.Println("Command does not exist")

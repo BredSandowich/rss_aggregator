@@ -1,13 +1,13 @@
 package main
 
 import (
-	"encoding/xml"
-	"net/http"
-	"errors"
-	"time"
 	"context"
+	"encoding/xml"
+	"html"
+	"io"
+	"net/http"
+	"time"
 )
-
 
 func fetchFeed(ctx context.Context, feedURL string) (*RSSFeed, error) {
 	client := &http.Client{
@@ -18,6 +18,7 @@ func fetchFeed(ctx context.Context, feedURL string) (*RSSFeed, error) {
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Set("User-Agent", "gator")
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -25,5 +26,27 @@ func fetchFeed(ctx context.Context, feedURL string) (*RSSFeed, error) {
 	}
 	defer resp.Body.Close()
 
-	return nil, nil
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var feed RSSFeed
+	if err := xml.Unmarshal(data, &feed); err != nil {
+		return nil, err
+	}
+
+	// Decode escaped HTML on Channel:
+	feed.Channel.Title = html.UnescapeString(feed.Channel.Title)
+	feed.Channel.Description = html.UnescapeString(feed.Channel.Description)
+
+	for i := range feed.Channel.Item {
+		// Access the current title to decode escaped HTML:
+		feed.Channel.Item[i].Title = html.UnescapeString(feed.Channel.Item[i].Title)
+
+		//Access the current description to decode escaped HTML:
+		feed.Channel.Item[i].Description = html.UnescapeString(feed.Channel.Item[i].Description)
+	}
+
+	return &feed, nil
 }
