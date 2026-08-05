@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Sup homie?")
+	fmt.Println("Sup homie? Keeping up with your reading?")
 
 	configuration, err := config.Read()
 	if err != nil {
@@ -52,5 +52,4 @@ func main() {
 			os.Exit(1)
 		}
 	}
-	fmt.Println(configuration)
 }
