@@ -10,6 +10,14 @@ import (
 	"github.com/BredSandowich/rss_aggregator/internal/database"
 )
 
+func printFeed(name, url, creator string) {
+	fmt.Printf("Feed created: %v\n", name)
+	fmt.Printf("From: %v\n", url)
+	if creator != "" {
+		fmt.Printf("Created by: %v\n", creator)
+	}
+}
+
 func handlerAddFeed(s *state, cmd command) error {
 	//Check for missing arguments
 	if len(cmd.Args) != 2 {
@@ -37,5 +45,34 @@ func handlerAddFeed(s *state, cmd command) error {
 	fmt.Printf("Feed created: %v\n", feed.Name)
 	fmt.Printf("From: %v\n", feed.Url)
 
+	//future use print helper function
+	//printFeed(feed.Name, feed.Url, user.Name)
+
 	return nil
+}
+
+
+func handlerListFeeds(s *state, cmd command) error {
+		//Call method on config pointer
+		feeds, err := s.db.GetFeeds(context.Background())
+		if err != nil {
+			return err
+		}
+
+		if len(feeds) == 0 {
+			fmt.Println("No feeds to return")
+			return nil
+		}
+	
+		for _, feed := range feeds {
+			fmt.Printf("Feed created: %v\n", feed.FeedName)
+			fmt.Printf("From: %v\n", feed.Url)
+			fmt.Printf("Created by: %v\n", feed.UserName)
+
+			//future use print helper function
+			//printFeed(feed.FeedName, feed.Url, feed.UserName)
+		}
+
+		//Return
+		return nil
 }
