@@ -40,10 +40,22 @@ func handlerAddFeed(s *state, cmd command) error {
 		})
 	if err != nil {
 		return err
-}	
+	}
+	
+	following, err := s.db.CreateFeedFollow(context.Background(), database.CreateFeedFollowParams{
+		ID:        uuid.New(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		UserID:      user.ID,
+		FeedID: 	feed.ID,
+		})
+	if err != nil {
+		return err
+	}
 
 	fmt.Printf("Feed created: %v\n", feed.Name)
 	fmt.Printf("From: %v\n", feed.Url)
+	fmt.Printf("%s is now following %s\n", following.UserName, following.FeedName)
 
 	//future use print helper function
 	//printFeed(feed.Name, feed.Url, user.Name)
