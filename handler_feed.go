@@ -18,17 +18,17 @@ func printFeed(name, url, creator string) {
 	}
 }
 
-func handlerAddFeed(s *state, cmd command) error {
+func handlerAddFeed(s *state, cmd command, user database.User) error {
 	//Check for missing arguments
 	if len(cmd.Args) != 2 {
 		return errors.New("Incorrect arguments entered")
 	}
 	
 	//Get current user
-	user, err := s.db.GetUser(context.Background(), s.Config.CurrentUserName)
-	if err != nil {
-		return err
-	}
+	//user, err := s.db.GetUser(context.Background(), s.Config.CurrentUserName)
+	//if err != nil {
+	//	return err
+	//}
 
 	feed, err := s.db.CreateFeed(context.Background(), database.CreateFeedParams{
 		ID:        uuid.New(),
