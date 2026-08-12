@@ -42,6 +42,7 @@ func main() {
 	myCommands.register("feeds", handlerListFeeds)
 	myCommands.register("follow", middlewareLoggedIn(handlerFollow))
 	myCommands.register("following", middlewareLoggedIn(handlerFollowing))
+	myCommands.register("unfollow", middlewareLoggedIn(handlerUnfollow))
 
 	if len(os.Args) < 2 {
 		fmt.Println("Command does not exist")
