@@ -9,12 +9,12 @@ Written in Go to register users, subscribe and track subscriptions, and fetch th
 - PostgreSQL (configured and running)
 
 ## Installation 
-   1. **Install the `gator` CLI**:
+   **Install the `gator` CLI**:
    Use the following command to download and install the binary
    ```sh
    go install github.com/BredSandowich/rss_aggregator@latest
    ```
-   This will download and install the binary directly to the Go bin path.
+   This will download and install the binary directly to the Go bin path ie) puts the executable in you $GOPATH/bin directory, allowing you to run gator from any terminal directory.
 
 ## Configuration
 
